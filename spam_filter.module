@@ -1,0 +1,10 @@
+<?php
+
+/**
+ * @file
+ * Contains spam_filter.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+?>
