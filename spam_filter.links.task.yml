@@ -1,0 +1,22 @@
+# Spam filter storage routing definition
+spam_filter_storage.settings_tab:
+  route_name: spam_filter_storage.settings
+  title: 'Settings'
+  base_route: spam_filter_storage.settings
+
+entity.spam_filter_storage.canonical:
+  route_name: entity.spam_filter_storage.canonical
+  base_route: entity.spam_filter_storage.canonical
+  title: 'View'
+
+entity.spam_filter_storage.edit_form:
+  route_name: entity.spam_filter_storage.edit_form
+  base_route: entity.spam_filter_storage.canonical
+  title: 'Edit'
+
+entity.spam_filter_storage.delete_form:
+  route_name:  entity.spam_filter_storage.delete_form
+  base_route:  entity.spam_filter_storage.canonical
+  title: Delete
+  weight: 10
+

@@ -12,6 +12,7 @@ use Drupal\webform\Plugin\WebformHandler\EmailWebformHandler;
 use Drupal\webform\Utility\WebformDateHelper;
 use Drupal\webform\WebformSubmissionInterface;
 use Drupal\webform_scheduled_email\WebformScheduledEmailManagerInterface;
+use Drupal\spam_filter\Entity\SpamFilterStorage;
 
 /**
  * Schedules a webform submission's email.
@@ -34,6 +35,7 @@ class SpamIdentificationWebformHandler extends EmailWebformHandler {
   public function defaultConfiguration() {
     return parent::defaultConfiguration() +[
     'url' => 'http://205.147.99.79:3000/classify',
+    'site_url' => 'http://localhost/drupal-8k/',
   ];
   }
 
@@ -47,6 +49,13 @@ class SpamIdentificationWebformHandler extends EmailWebformHandler {
     '#title' => $this->t('Spam Identification URL'),
     '#description' => $this->t('The API which checks whether the content is spam or not.'),
     '#default_value' => $this->configuration['url'],
+    '#required' => TRUE,
+  ];
+  $form['site_url'] = [
+    '#type' => 'textfield',
+    '#title' => $this->t('Site URL'),
+    '#description' => $this->t('Address of site'),
+    '#default_value' => $this->configuration['site_url'],
     '#required' => TRUE,
   ];
   return $form;
@@ -66,19 +75,23 @@ class SpamIdentificationWebformHandler extends EmailWebformHandler {
    */
   public function postSave(WebformSubmissionInterface $webform_submission, $update = TRUE) {
     $client = \Drupal::httpClient();
-    $temp= ($webform_submission->data)['message'];
+    $data = $webform_submission->getdata();
     $request = $client->post($this->configuration['url'], [
     'form_params' => [
-      'comment'=> $temp,
+      'comment'=> $data['message'],
       'mail'=> \Drupal::currentUser()->getEmail(),
-      'url'=>'https://opensenselabs.com'
+      'url'=> $this->configuration['site_url']
     ]
   ]);
   $response = json_decode($request->getBody(),true);
 
-  echo $response["classified_by"];
-  echo $response["label"];
-  die();
+  $entity_fill = SpamFilterStorage::create([
+      'name' => 'Spam Filter',
+      'field_classification' => $response['label'],
+      'field_classified_by' => $response['classified_by'],
+      'field_message' => $data['message']
+    ]);
+    $entity_fill->save();
     
   }
 }

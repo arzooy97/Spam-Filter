@@ -1,0 +1,14 @@
+
+# Spam filter storage menu items definition
+entity.spam_filter_storage.collection:
+  title: 'Spam filter storage list'
+  route_name: entity.spam_filter_storage.collection
+  description: 'List Spam filter storage entities'
+  parent: system.admin_structure
+  weight: 100
+
+spam_filter_storage.admin.structure.settings:
+  title: 'Spam filter storage settings'
+  description: 'Configure Spam filter storage entities'
+  route_name: spam_filter_storage.settings
+  parent: system.admin_structure

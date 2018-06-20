@@ -1,0 +1,22 @@
+{#
+/**
+ * @file spam_filter_storage.html.twig
+ * Default theme implementation to present Spam filter storage data.
+ *
+ * This template is used when viewing Spam filter storage pages.
+ *
+ *
+ * Available variables:
+ * - content: A list of content items. Use 'content' to print all content, or
+ * - attributes: HTML attributes for the container element.
+ *
+ * @see template_preprocess_spam_filter_storage()
+ *
+ * @ingroup themeable
+ */
+#}
+<div{{ attributes.addClass('spam_filter_storage') }}>
+  {% if content %}
+    {{- content -}}
+  {% endif %}
+</div>

@@ -1,0 +1,5 @@
+entity.spam_filter_storage.add_form:
+  route_name: entity.spam_filter_storage.add_form
+  title: 'Add Spam filter storage'
+  appears_on:
+    - entity.spam_filter_storage.collection

@@ -1,0 +1,19 @@
+add spam filter storage entities:
+  title: 'Create new Spam filter storage entities'
+
+administer spam filter storage entities:
+  title: 'Administer Spam filter storage entities'
+  description: 'Allow to access the administration form to configure Spam filter storage entities.'
+  restrict access: true
+
+delete spam filter storage entities:
+  title: 'Delete Spam filter storage entities'
+
+edit spam filter storage entities:
+  title: 'Edit Spam filter storage entities'
+
+view published spam filter storage entities:
+  title: 'View published Spam filter storage entities'
+
+view unpublished spam filter storage entities:
+  title: 'View unpublished Spam filter storage entities'

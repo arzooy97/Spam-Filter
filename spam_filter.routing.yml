@@ -1,0 +1,7 @@
+spam_filter.content:
+  path: '/results'
+  defaults:
+    _controller: '\Drupal\spam_filter\Controller\EntityStorageController::content'
+    _title: 'Spam Filtering Results'
+  requirements:
+    _permission: 'access content'
