@@ -1,7 +1,15 @@
-spam_filter.content:
-  path: '/results'
+spam_filter.admin:
+  path: '/admin/config/spam_filter'
   defaults:
-    _controller: '\Drupal\spam_filter\Controller\EntityStorageController::content'
-    _title: 'Spam Filtering Results'
+    _controller: '\Drupal\system\Controller\SystemController::systemAdminMenuBlockPage'
+    _title: 'Spam Filter'
   requirements:
-    _permission: 'access content'
+    _permission: 'access administration pages'
+
+spam_filter.spam_filter_dashboard:
+  path: '/admin/config/spam_filter/settings'
+  defaults:
+    _title: 'Spam Filter Dashboard'
+    _controller: '\Drupal\spam_filter\Controller\EntityStorageController::SpamList'
+  requirements:
+    _permission: 'administer spam_filter'

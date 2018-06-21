@@ -36,6 +36,7 @@ class SpamIdentificationWebformHandler extends EmailWebformHandler {
     return parent::defaultConfiguration() +[
     'url' => 'http://205.147.99.79:3000/classify',
     'site_url' => 'http://localhost/drupal-8k/',
+    'field_to_classify' => '',
   ];
   }
 
@@ -58,6 +59,13 @@ class SpamIdentificationWebformHandler extends EmailWebformHandler {
     '#default_value' => $this->configuration['site_url'],
     '#required' => TRUE,
   ];
+  $form['field_to_classify'] = [
+    '#type' => 'textfield',
+    '#title' => $this->t('Field to classify'),
+    '#description' => $this->t('The field which is to be classified as spam, ham or doubt'),
+    '#default_value' => $this->configuration['field_to_classify'],
+    '#required' => TRUE,
+  ];
   return $form;
     
   }
@@ -76,9 +84,11 @@ class SpamIdentificationWebformHandler extends EmailWebformHandler {
   public function postSave(WebformSubmissionInterface $webform_submission, $update = TRUE) {
     $client = \Drupal::httpClient();
     $data = $webform_submission->getdata();
+    $field = $this->configuration['field_to_classify'];
+
     $request = $client->post($this->configuration['url'], [
     'form_params' => [
-      'comment'=> $data['message'],
+      'comment'=> $data[$field],
       'mail'=> \Drupal::currentUser()->getEmail(),
       'url'=> $this->configuration['site_url']
     ]
@@ -86,10 +96,9 @@ class SpamIdentificationWebformHandler extends EmailWebformHandler {
   $response = json_decode($request->getBody(),true);
 
   $entity_fill = SpamFilterStorage::create([
-      'name' => 'Spam Filter',
       'field_classification' => $response['label'],
       'field_classified_by' => $response['classified_by'],
-      'field_message' => $data['message']
+      'field_message' => $data[$field]
     ]);
     $entity_fill->save();
     

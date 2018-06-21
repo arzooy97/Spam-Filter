@@ -4,30 +4,38 @@ namespace Drupal\spam_filter\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\EntityInterface;
+use \Drupal\Core\Entity\Query\QueryInterface;
+use Drupal\Core\Url;
+use Drupal\Core\Database\Connection;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class EntityStorageController extends ControllerBase {
-
+  
   /**
-   * Display the markup.
+   * Returns a simple page.
    *
    * @return array
+   *   A simple renderable array.
    */
-  public function content() {
+  public function SpamList() {
 
-    $storage = \Drupal::entityTypeManager()->getStorage('spam_filter_storage');
-    $uids = \Drupal::entityQuery('spam_filter_storage')
-          ->execute();
-    $entities = $storage->loadMultiple($uids);
-    $view_builder = \Drupal::entityTypeManager()->getViewBuilder('spam_filter_storage');
+    $header = [
+      $this->t('Message'),
+      $this->t('Classified By'),
+      $this->t('Classification'),
+    ];
 
-    $counter = 0;
-   
-    foreach($entities as $entity) {
-      $output[$counter] = $view_builder->view($entity);
-      $counter++;
-    }
+    $query = \Drupal::entityQuery('spam_filter_storage')
+      ->execute();
 
-    return $output;
+    $build['admin_spam_filter_list_table'] = [
+      '#type' => 'table',
+      '#header' => $header,
+      '#rows' => $rows,
+      '#empty' => $this->t('No result available.'),
+    ];
+    $build['admin_spam_filter_list_pager'] = ['#theme' => 'pager'];
+    return $build;
   }
 
 }
