@@ -34,8 +34,9 @@ class SpamIdentificationWebformHandler extends EmailWebformHandler {
    */
   public function defaultConfiguration() {
     return parent::defaultConfiguration() +[
-    'url' => 'http://205.147.99.79:3000/classify',
-    'site_url' => 'http://localhost/drupal-8k/',
+    'get_url' => '',
+    'submission_url' => '',
+    'site_url' => '',
     'field_to_classify' => '',
   ];
   }
@@ -45,27 +46,36 @@ class SpamIdentificationWebformHandler extends EmailWebformHandler {
    * {@inheritdoc}
    */
   public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
-    $form['url'] = [
+    $form['get_url'] = [
     '#type' => 'textfield',
     '#title' => $this->t('Spam Identification URL'),
     '#description' => $this->t('The API which checks whether the content is spam or not.'),
-    '#default_value' => $this->configuration['url'],
+    '#default_value' => $this->configuration['get_url'],
     '#required' => TRUE,
-  ];
-  $form['site_url'] = [
+    ];
+
+    $form['submission_url'] = [
+    '#type' => 'textfield',
+    '#title' => $this->t('Verification URL'),
+    '#description' => $this->t('The API where the user sends a post request to submit his own response'),
+    '#default_value' => $this->configuration['submission_url'],
+    '#required' => TRUE,
+    ];
+
+   $form['site_url'] = [
     '#type' => 'textfield',
     '#title' => $this->t('Site URL'),
     '#description' => $this->t('Address of site'),
     '#default_value' => $this->configuration['site_url'],
     '#required' => TRUE,
-  ];
-  $form['field_to_classify'] = [
+   ];
+   $form['field_to_classify'] = [
     '#type' => 'textfield',
     '#title' => $this->t('Field to classify'),
     '#description' => $this->t('The field which is to be classified as spam, ham or doubt'),
     '#default_value' => $this->configuration['field_to_classify'],
     '#required' => TRUE,
-  ];
+   ];
   return $form;
     
   }
@@ -86,7 +96,7 @@ class SpamIdentificationWebformHandler extends EmailWebformHandler {
     $data = $webform_submission->getdata();
     $field = $this->configuration['field_to_classify'];
 
-    $request = $client->post($this->configuration['url'], [
+    $request = $client->post($this->configuration['get_url'], [
     'form_params' => [
       'comment'=> $data[$field],
       'mail'=> \Drupal::currentUser()->getEmail(),
