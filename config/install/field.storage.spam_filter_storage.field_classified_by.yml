@@ -1,0 +1,21 @@
+uuid: 7f4b6100-68b8-4e1f-ba1b-fe501cafc98a
+langcode: en
+status: true
+dependencies:
+  module:
+    - spam_filter
+id: spam_filter_storage.field_classified_by
+field_name: field_classified_by
+entity_type: spam_filter_storage
+type: string
+settings:
+  max_length: 255
+  is_ascii: false
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

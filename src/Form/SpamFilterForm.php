@@ -100,6 +100,7 @@ class SpamFilterForm extends ConfigFormBase {
 
     // Create headers for table.
     $header = [
+      $this->t('Webform ID'),
       $this->t('Message'),
       $this->t('Classification'),
       $this->t('Classified By'),
@@ -133,8 +134,6 @@ class SpamFilterForm extends ConfigFormBase {
       '#suffix' => '</div>',
     ];
 
-
-
     $storage = \Drupal::entityTypeManager()->getStorage('spam_filter_storage');
     $uids = \Drupal::entityQuery('spam_filter_storage')
           ->execute();
@@ -143,53 +142,88 @@ class SpamFilterForm extends ConfigFormBase {
     $counter = 0;
 
     // Create row for table.
-    foreach ($entities as $entity)
-    {
+    foreach ($entities as $entity) {
       foreach ($spt_table as $i => $value) {
+
+        $form['spt_table'][$counter]['webform_id'] = [
+          '#type' => 'markup',
+          '#markup' => $entity->get("field_webform_id")->getString()
+        ];   
+
         $form['spt_table'][$counter]['message'] = [
-        '#type' => 'markup',
-        '#markup' => $entity->get("field_message")->getString()
-      ];   
+          '#type' => 'markup',
+          '#markup' => $entity->get("field_message")->getString()
+        ];   
 
-      $form['spt_table'][$counter]['Classification'] = [
-        '#type' => 'markup',
-        '#markup' => $entity->get("field_classification")->getString()
-      ]; 
+        $form['spt_table'][$counter]['Classification'] = [
+          '#type' => 'markup',
+          '#markup' => $entity->get("field_classification")->getString()
+        ]; 
 
-      $form['spt_table'][$counter]['Classified By'] = [
-        '#type' => 'markup',
-        '#markup' => $entity->get("field_classified_by")->getString()
-      ]; 
+        $form['spt_table'][$counter]['Classified By'] = [
+          '#type' => 'markup',
+          '#markup' => $entity->get("field_classified_by")->getString()
+        ]; 
  
-      $form['spt_table'][$counter]['verify']= [
-        '#type' => 'radios',
-        '#title' => $this->t('Verify'),
-        '#title_display' => 'invisible',
-        '#options' => array(
-          'a' =>t('spam'),
-          'b' =>t('ham'),
-          'c' =>t('doubt'),
+        $form['spt_table'][$counter]['verify']= [
+          '#type' => 'radios',
+          '#title' => $this->t('Verify'),
+          '#title_display' => 'invisible',
+          '#options' => array(
+            'a' =>t('spam'),
+            'b' =>t('ham'),
+            'c' =>t('doubt'),
+          ),
+          '#default_value' => isset($value['verify']) ? $value['verify'] : 'a',
+        ];
 
-         ),
-        '#default_value' => isset($value['verify']) ? $value['verify'] : [],
-      ];
+        $form['spt_table'][$counter]['submitBtn'] = [
+          '#type' => 'submit',
+          '#value' => $this->t('Submit'),
+          '#name' => "submitBtn-" . $counter,
+          '#button_type' => 'primary',
+          '#submit' => ['::submitElement'],
+        ];
 
-      $form['spt_table'][$counter]['submitBtn'] = [
-        '#type' => 'submit',
-        '#value' => $this->t('Submit'),
-        '#button_type' => 'primary',
-        
-      ];
-
+      }
+      $counter++;
     }
-    $counter++;
-  }
     $form_state->setCached(FALSE);
     return parent::buildForm($form, $form_state);
     
   }
 
+  /**
+   * Submit handler for the "Remove" button(s).
+   *
+   * Remove the element from table and causes a form rebuild.
+   */
+  public function submitElement(array &$form, FormStateInterface $form_state) {
+    $trigger = $form_state->getTriggeringElement();
+    $index = (int)(substr($trigger['#name'],10,1));
 
+    if($form['spt_table'][$index]['verify']['#value']["a"] === "a") {
+      $lbl = "spam";
+    }
+
+    elseif($form['spt_table'][$index]['verify']['#value']["b"] === "b") {
+      $lbl = "ham";
+    }
+
+    else {
+      $lbl = "doubt";
+    }
+    
+    $client = \Drupal::httpClient();
+
+    $request = $client->post('http://205.147.99.79:3000/list_data', [
+      'form_params' => [
+        'id'=> $form['spt_table'][$index]['message']['#markup'],
+        'label'=> $lbl,
+      ]
+    ]);
+    $response = json_decode($request->getBody(),true);
+  }
 
   /**
    * {@inheritdoc}
@@ -200,6 +234,3 @@ class SpamFilterForm extends ConfigFormBase {
   }
 
 }
-
-
-

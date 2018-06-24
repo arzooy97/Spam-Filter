@@ -1,0 +1,20 @@
+uuid: 2bc86fd1-42e3-454a-b7a1-fad390a4e310
+langcode: en
+status: true
+dependencies:
+  module:
+    - spam_filter
+    - webform
+id: spam_filter_storage.field_webform_id
+field_name: field_webform_id
+entity_type: spam_filter_storage
+type: webform
+settings:
+  target_type: webform
+module: webform
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,20 @@
+uuid: 7e39409a-e4b7-45dc-bfa5-92b73cd11f67
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.spam_filter_storage.field_classified_by
+  module:
+    - spam_filter
+id: spam_filter_storage.spam_filter_storage.field_classified_by
+field_name: field_classified_by
+entity_type: spam_filter_storage
+bundle: spam_filter_storage
+label: 'Classified By'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

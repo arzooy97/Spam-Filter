@@ -1,0 +1,29 @@
+uuid: b33fe7b5-7c63-4349-9957-a20f943493eb
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.spam_filter_storage.field_webform_id
+  module:
+    - spam_filter
+    - webform
+id: spam_filter_storage.spam_filter_storage.field_webform_id
+field_name: field_webform_id
+entity_type: spam_filter_storage
+bundle: spam_filter_storage
+label: 'Webform Id'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:webform'
+  handler_settings:
+    target_bundles: null
+    auto_create: false
+  default_data: ''
+  status: open
+  open: ''
+  close: ''
+field_type: webform

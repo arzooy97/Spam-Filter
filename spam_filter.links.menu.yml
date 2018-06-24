@@ -1,4 +1,3 @@
-
 # Spam filter storage menu items definition
 entity.spam_filter_storage.collection:
   title: 'Spam filter storage list'

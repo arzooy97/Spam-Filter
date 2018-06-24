@@ -1,0 +1,19 @@
+uuid: e52ea76a-b0fa-4026-8bad-05cef8408475
+langcode: en
+status: true
+dependencies:
+  module:
+    - spam_filter
+id: spam_filter_storage.field_message
+field_name: field_message
+entity_type: spam_filter_storage
+type: string_long
+settings:
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

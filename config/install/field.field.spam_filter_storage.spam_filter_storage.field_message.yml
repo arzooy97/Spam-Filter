@@ -1,0 +1,20 @@
+uuid: 23e66a2c-e720-49bd-8453-e99705e94c26
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.spam_filter_storage.field_message
+  module:
+    - spam_filter
+id: spam_filter_storage.spam_filter_storage.field_message
+field_name: field_message
+entity_type: spam_filter_storage
+bundle: spam_filter_storage
+label: Message
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long
