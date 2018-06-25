@@ -28,7 +28,7 @@ use Drupal\spam_filter\Entity\SpamFilterStorage;
  * )
  */
 class SpamIdentificationWebformHandler extends EmailWebformHandler {
-  
+
   /**
    * {@inheritdoc}
    */
@@ -112,6 +112,11 @@ class SpamIdentificationWebformHandler extends EmailWebformHandler {
       'field_webform_id' => $webform_id
     ]);
     $entity_fill->save();
-    
+
+    $temp = $this->configuration['submission_url'];
+
+    $config = \Drupal::service('config.factory')->getEditable('spam_filter.settings');
+    $config->set('variable_one', $temp)
+      ->save();
   }
 }

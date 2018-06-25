@@ -6,12 +6,12 @@ spam_filter.admin:
   requirements:
     _permission: 'access administration pages'
 
-spam_filter.settings:
-  path: '/admin/config/system/spam_filter'
+spam_filter.spam_filter_dashboard:
+  path: '/admin/config/spam_filter/settings'
   defaults:
     _form: '\Drupal\spam_filter\Form\SpamFilterForm'
     _title: 'Spam Filter'
   requirements:
-    _permission: 'administer site configuration'
+    _permission: 'administer spam_filter'
 
 

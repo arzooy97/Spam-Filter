@@ -1,0 +1,7 @@
+spam_filter.settings:
+  type: mapping
+  label: Variable Settings of module
+  mapping:
+    variable_one:
+      type: string
+    

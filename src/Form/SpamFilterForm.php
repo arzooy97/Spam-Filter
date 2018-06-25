@@ -14,7 +14,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class SpamFilterForm extends ConfigFormBase {
 
-
   /**
    * The module handler.
    *
@@ -95,7 +94,6 @@ class SpamFilterForm extends ConfigFormBase {
    *   Current state of form.
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $form = parent::buildForm($form, $form_state);
     // Fetch configurations if saved.
     $config = $this->config('spam_filter.settings');
 
@@ -148,7 +146,8 @@ class SpamFilterForm extends ConfigFormBase {
 
         $form['spt_table'][$counter]['webform_id'] = [
           '#type' => 'markup',
-          '#markup' => $entity->get("field_webform_id")->getString()
+          '#markup' => $entity->get("field_webform_id")->getString(), 
+
         ];   
 
         $form['spt_table'][$counter]['message'] = [
@@ -190,7 +189,7 @@ class SpamFilterForm extends ConfigFormBase {
       $counter++;
     }
     $form_state->setCached(FALSE);
-    return parent::buildForm($form, $form_state);
+    return $form;
     
   }
 
@@ -200,6 +199,7 @@ class SpamFilterForm extends ConfigFormBase {
    * Remove the element from table and causes a form rebuild.
    */
   public function submitElement(array &$form, FormStateInterface $form_state) {
+
     $trigger = $form_state->getTriggeringElement();
     $index = (int)(substr($trigger['#name'],10,1));
 
@@ -215,9 +215,12 @@ class SpamFilterForm extends ConfigFormBase {
       $lbl = "doubt";
     }
     
+    $config = \Drupal::config('spam_filter.settings');
+    $variable_one = $config->get('variable_one');
+
     $client = \Drupal::httpClient();
 
-    $request = $client->post('http://205.147.99.79:3000/list_data', [
+    $request = $client->post($variable_one, [
       'form_params' => [
         'id'=> $form['spt_table'][$index]['message']['#markup'],
         'label'=> $lbl,
@@ -230,14 +233,13 @@ class SpamFilterForm extends ConfigFormBase {
           ->execute();
     $entities = $storage->loadMultiple($uids);
 
-    $counter = 0;
     foreach($entities as $entity) {
       if($entity->get("field_message")->getString() === $form['spt_table'][$index]['message']['#markup'] && $entity->get("field_webform_id")->getString() === $form['spt_table'][$index]['webform_id']['#markup']){
         $entity->set('field_classification', $lbl);
         $entity->save();
       } 
     }
-    
+    drupal_set_message($this->t('Saved Successfully'));
   }
 
   /**

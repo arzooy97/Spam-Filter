@@ -12,11 +12,19 @@ spam_filter_storage.admin.structure.settings:
   route_name: spam_filter_storage.settings
   parent: system.admin_structure
 
-spam_filter.settings:
+spam_filter.admin:
   title: Spam Filter
-  description: 'Classify as spam, ham or doubt.'
-  parent: system.admin_config_system
-  route_name: spam_filter.settings
-  weight: 10
+  route_name: spam_filter.admin
+  parent: system.admin_config
+  description: 'Display message settings'
+  position: left
+  weight: -35
+
+spam_filter.menulink:
+  title: Spam Filter Dashboard
+  description: 'Display Spam Filter Management Dashboard'
+  route_name: spam_filter.spam_filter_dashboard
+  parent: spam_filter.admin
+  weight: -8
 
 
