@@ -1,4 +1,4 @@
-<?php
+<?php 
 
 namespace Drupal\spam_filter\Plugin\WebformHandler;
 
@@ -28,7 +28,7 @@ use Drupal\spam_filter\Entity\SpamFilterStorage;
  * )
  */
 class SpamIdentificationWebformHandler extends EmailWebformHandler {
-
+  
   /**
    * {@inheritdoc}
    */

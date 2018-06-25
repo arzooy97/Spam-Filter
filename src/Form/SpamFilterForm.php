@@ -14,6 +14,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class SpamFilterForm extends ConfigFormBase {
 
+
   /**
    * The module handler.
    *
@@ -223,14 +224,27 @@ class SpamFilterForm extends ConfigFormBase {
       ]
     ]);
     $response = json_decode($request->getBody(),true);
+
+    $storage = \Drupal::entityTypeManager()->getStorage('spam_filter_storage');
+    $uids = \Drupal::entityQuery('spam_filter_storage')
+          ->execute();
+    $entities = $storage->loadMultiple($uids);
+
+    $counter = 0;
+    foreach($entities as $entity) {
+      if($entity->get("field_message")->getString() === $form['spt_table'][$index]['message']['#markup'] && $entity->get("field_webform_id")->getString() === $form['spt_table'][$index]['webform_id']['#markup']){
+        $entity->set('field_classification', $lbl);
+        $entity->save();
+      } 
+    }
+    
   }
 
   /**
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    
-    
+
   }
 
 }
