@@ -144,9 +144,17 @@ class SpamFilterForm extends ConfigFormBase {
     foreach ($entities as $entity) {
       foreach ($spt_table as $i => $value) {
 
+        $wf_mc = $entity->get("field_webform_id")->getString();
+        $wf_mc = explode('_', $wf_mc);
+        $new_wf_mc = implode("-", $wf_mc);  
+
+        $href = '/form/'.$new_wf_mc;
+        $link = '<a href="'.$href.'">'.$new_wf_mc.'</a>';
+
         $form['spt_table'][$counter]['webform_id'] = [
           '#type' => 'markup',
-          '#markup' => $entity->get("field_webform_id")->getString(), 
+          '#markup' => $link, 
+          '#allowed_tags' => ['a'],
 
         ];   
 
