@@ -1,5 +1,5 @@
 name: Spam Filter
-description: 'Post a comment only if it not spam.'
+description: 'To categorise the message as spam, ham or doubt.'
 type: module
 core: '8.x'
 package: 'Spam Filter'
