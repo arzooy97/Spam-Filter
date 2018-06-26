@@ -242,11 +242,12 @@ class SpamFilterForm extends ConfigFormBase {
     $entities = $storage->loadMultiple($uids);
 
     foreach($entities as $entity) {
-      if($entity->get("field_message")->getString() === $form['spt_table'][$index]['message']['#markup'] && $entity->get("field_webform_id")->getString() === $form['spt_table'][$index]['webform_id']['#markup']){
+      if($entity->get("field_message")->getString() === $form['spt_table'][$index]['message']['#markup']){
         $entity->set('field_classification', $lbl);
         $entity->save();
       } 
     }
+  
     drupal_set_message($this->t('Saved Successfully'));
   }
 
