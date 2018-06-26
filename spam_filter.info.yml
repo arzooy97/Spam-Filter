@@ -2,5 +2,7 @@ name: Spam Filter
 description: 'Post a comment only if it not spam.'
 type: module
 core: '8.x'
-package: Custom
+package: 'Spam Filter'
 configure: spam_filter.settings
+dependencies:
+  - webform:webform
